@@ -3,7 +3,7 @@ import dfs_xy_conv from "./xyGrid";
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
-const Test = () => {
+const Weather = () => {
   const [weatherData, setWeatherData] = useState(null);
 
   useEffect(() => {
@@ -12,6 +12,14 @@ const Test = () => {
         "http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst";
       const authKey = API_KEY;
 
+      // time set
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = ("0" + (today.getMonth() + 1)).slice(-2);
+      const day = ("0" + today.getDate()).slice(-2);
+      const dateString = year + month + day;
+
+      console.log(dateString);
       //get a current geo values
       navigator.geolocation.getCurrentPosition(async (position) => {
         //get current lati, long values
@@ -22,7 +30,7 @@ const Test = () => {
         const xy = dfs_xy_conv("toXY", parseFloat(lati), parseFloat(long));
         const xx = `${xy.x}`;
         const yy = `${xy.y}`;
-        const reqURL = `${url}?serviceKey=${authKey}&numOfRows=10&pageNo=1&dataType=JSON&base_date=20240322&base_time=0630&nx=${xx}&ny=${yy}`;
+        const reqURL = `${url}?serviceKey=${authKey}&numOfRows=10&pageNo=1&dataType=JSON&base_date=${dateString}&base_time=0630&nx=${xx}&ny=${yy}`;
         console.log(reqURL);
 
         try {
@@ -55,4 +63,4 @@ const Test = () => {
   );
 };
 
-export default Test;
+export default Weather;
